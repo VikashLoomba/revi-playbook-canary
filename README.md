@@ -1,4 +1,4 @@
-# ReviOS Playbook
+# ReviOS Playbook for Windows Canary Releases
 
 [![Releases](https://img.shields.io/github/v/release/meetrevision/playbook.svg)](https://github.com/meetrevision/playbook/releases)
 [![License](https://img.shields.io/static/v1?label=LICENSE&message=CC%20BY-NC-SA&logo=creativecommons)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
