@@ -1,0 +1,68 @@
+name: Archive and Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+env:
+    SXSC_REPO: 'https://github.com/Atlas-OS/sxsc'
+    FILENAME: 'Revi-PB-canary-${{ github.ref_name }}.apbx'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+        # Credits to echnobas, Atlas and all the contributors.
+      - name: Git clone sxsc
+        run: |
+          git clone --depth=1 ${{ env.SXSC_REPO }} sxsc-src
+
+      - name: Build cab
+        run: |
+          pip install -r requirements.txt | Out-Null
+          $systemPackages = "..\src\Executables\CAB\systemPackages.yaml" 
+          Copy-Item -Path $systemPackages -Destination "cfg.yaml" -Force | Out-Null
+          python sxsc.py
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          .\build.bat
+          Copy-Item -Path *.cab -Destination "..\src\Executables\CAB" -Force | Out-Null
+          .\clean.bat
+        working-directory: sxsc-src
+        #
+      
+      - name: Archive content
+        run: |
+          7z a -pmalte -mhe=on ${{ env.FILENAME }} ./src/*
+
+      - name: Generate SHA256
+        run: |
+          $hash = (Get-FileHash -Algorithm SHA256 -Path ${{ env.FILENAME }}).Hash
+          echo ("HASH=" + $hash) >> $env:GITHUB_ENV
+      
+      # - name: DevUploads
+      #   run: |
+      #     url=$(bash <(curl -s https://devuploads.com/upload.sh) -f "${{ env.FILENAME }}" -k "${{ secrets.DEVUPLOADS_API_KEY }}" | grep -o 'https://devuploads.com[^"]*')
+      #     echo "DEVUPLOADS=$url" >> $GITHUB_ENV
+
+      - name: Release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.TOKEN }}
+          file: ${{ env.FILENAME }}
+          asset_name: ${{ env.FILENAME }}
+          tag: ${{ github.ref }}
+          overwrite: true
+          body: |
+            # Download Link ✨
+
+            If you would like to support Revision, kindly download the Playbook from the provided link below.
+
+            📌Link: 
+            
+            SHA256: `${{ env.HASH }}`
+            
