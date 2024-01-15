@@ -1,4 +1,5 @@
 # ReviOS Playbook
+
 [![Releases](https://img.shields.io/github/v/release/meetrevision/playbook.svg)](https://github.com/meetrevision/playbook/releases)
 [![License](https://img.shields.io/static/v1?label=LICENSE&message=CC%20BY-NC-SA&logo=creativecommons)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 <a href="https://www.buymeacoffee.com/meetrevision" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" height="20px"></a>
@@ -21,6 +22,7 @@ For more detailed information, see our documentation [here](https://www.revi.cc/
 - Windows 10 22H2 `19045`
 - Windows 11 22H2 `22621`
 - Windows 11 23H2 `22631`
+- Windows 11 23H2 (Canary) `26020`
 
 Any other build **is not** supported by Revision.
 
